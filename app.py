@@ -9,7 +9,7 @@ import openpyxl
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'cambiar-en-produccion')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///local.db').replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = re.sub(r'^postgres(ql)?://', 'postgresql+psycopg2://', os.environ.get('DATABASE_URL', 'sqlite:///local.db'))
 db = SQLAlchemy(app)
 lm = LoginManager(app); lm.login_view = 'login'
 
