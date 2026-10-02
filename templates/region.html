@@ -1,0 +1,8 @@
+{% extends 'base.html' %}{% block c %}<h2>{{r.name}} — {{year}}</h2>
+{% if current_user.is_admin %}<form method=get>Año <input type=number name=year value="{{year}}" style="width:80px"> <button>Ver</button></form>{% else %}<p class=f>Mes habilitado: <b>{{MESES[pm-1]}} {{py}}</b>. Solo puedes editar este mes.</p>{% endif %}<br>
+<form method=post><input type=hidden name=_t value="{{T}}"><input type=hidden name=year value="{{year}}">
+<div class=sc><table><tr><th>Mes</th>{% for k,c,l in F %}<th>{{l}}</th>{% if k in P %}<th class=pc>{{P[k][0]}}</th>{% endif %}{% endfor %}</tr>
+{% for m in range(1,13) %}<tr><th>{{MESES[m-1]}}</th>{% for k,c,l in F %}<td>{% if m in editable %}<input type=number min=0 name="{{m}}_{{k}}" value="{{vals[m][k] if vals[m][k] is not none}}">{% else %}{{vals[m][k] if vals[m][k] is not none}}{% endif %}</td>
+{% if k in P %}<td class=pc>{{pct(vals[m][P[k][1]],vals[m][P[k][2]])}}</td>{% endif %}{% endfor %}</tr>{% endfor %}</table></div>
+<p><button class=b>Guardar</button> Los datos no se pueden borrar; cada cambio queda en el historial.</p></form>
+{% if current_user.is_admin %}<a href="{{url_for('admin')}}">← Admin</a>{% endif %}{% endblock %}

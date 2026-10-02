@@ -1,0 +1,2 @@
+{% extends 'base.html' %}{% block c %}<h2>Historial de cambios (últimos 300)</h2><table><tr><th>Fecha (UTC)</th><th>Usuario</th><th>Región</th><th>Mes/Año</th><th>Campo</th><th>Antes</th><th>Después</th></tr>
+{% for a in rows %}<tr><td>{{a.at.strftime('%Y-%m-%d %H:%M')}}</td><td>{{a.user.full_name}}</td><td>{{a.entry.region_id}}</td><td>{{MESES[a.entry.month-1]}} {{a.entry.year}}</td><td>{{a.field}}</td><td>{{a.old}}</td><td>{{a.new}}</td></tr>{% endfor %}</table>{% endblock %}
