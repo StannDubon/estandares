@@ -114,7 +114,7 @@ def login():
     if request.method == 'POST':
         name = request.form.get('username', '').strip().lower()
         u = User.query.filter(db.func.lower(User.username) == name).first()
-        if not (u and u.active): flash('No encontramos ese usuario. Revise que esté bien escrito.')
+        if not (u and u.active): flash('No encontramos ese nombre. Revise que esté bien escrito.')
         elif not u.is_admin: login_user(u, remember=True); return redirect(url_for('home'))  # usuarios normales: solo nombre de usuario
         else:  # el administrador sí usa contraseña
             pw = request.form.get('password')

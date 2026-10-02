@@ -1,5 +1,5 @@
 {% extends 'base.html' %}{% block c %}<div class="card lg"><h2 style="font-size:24px">Bienvenida</h2>
 {% if need_pw %}<p>Hola, <b>{{need_pw}}</b>. Escriba su contraseña de administrador.</p>
 <form method=post><input type=hidden name=_t value="{{T}}"><input type=hidden name=username value="{{need_pw}}"><input name=password type=password placeholder=Contraseña required autofocus><button class=b>Entrar</button></form>
-{% else %}<p>Escriba su nombre de usuario y presione <b>Entrar</b>.</p>
-<form method=post><input type=hidden name=_t value="{{T}}"><input name=username placeholder="Su usuario" required autofocus autocapitalize=none autocomplete=username><button class=b>Entrar</button></form>{% endif %}</div>{% endblock %}
+{% else %}<p>Ingrese con su nombre. Escríbalo y presione <b>Entrar</b>.</p>
+<form method=post><input type=hidden name=_t value="{{T}}"><input name=username placeholder="Su nombre" required autofocus autocapitalize=none autocomplete=username><button class=b>Entrar</button></form>{% endif %}</div>{% endblock %}
