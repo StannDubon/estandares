@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, sen
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import text
+from sqlalchemy import text, inspect
 from sqlalchemy.exc import IntegrityError
 import openpyxl
 
@@ -39,6 +39,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(255), nullable=False)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
     active = db.Column(db.Boolean, default=True, nullable=False)
+    deleted = db.Column(db.Boolean, default=False, nullable=False, server_default=db.false())
     region_id = db.Column(db.Integer, db.ForeignKey('region.id'))
     region = db.relationship('Region')
     @property
@@ -89,6 +90,8 @@ def admin_only():
 
 def setup():
     db.create_all()
+    if 'deleted' not in [c['name'] for c in inspect(db.engine).get_columns('user')]:  # migración para bases ya creadas
+        with db.engine.begin() as c: c.execute(text('ALTER TABLE "user" ADD COLUMN deleted BOOLEAN NOT NULL DEFAULT false'))
     pg = db.engine.dialect.name == 'postgresql'
     with db.engine.begin() as c:
         for t in ('entries', 'audit'):  # la BD misma impide borrar
@@ -160,7 +163,7 @@ def region(rid):
 @login_required
 def admin():
     admin_only()
-    return render_template('admin.html', period=period(), users=User.query.order_by(User.id).all(), regions=Region.query.order_by(Region.id).all())
+    return render_template('admin.html', period=period(), users=User.query.filter_by(deleted=False).order_by(User.id).all(), regions=Region.query.order_by(Region.id).all())
 
 @app.post('/admin/region')
 @login_required
@@ -198,6 +201,17 @@ def admin_period():
     for k in ('year', 'month'):
         v = db.session.get(Setting, k) or Setting(key=k); v.value = str(int(request.form[k])); db.session.add(v)
     db.session.commit(); flash('Mes habilitado actualizado'); return redirect(url_for('admin'))
+
+@app.post('/admin/user/delete')
+@login_required
+def admin_user_delete():
+    admin_only(); u = db.get_or_404(User, int(request.form['id']))
+    if u.deleted: pass
+    elif u.id == current_user.id: flash('No puedes eliminar tu propio usuario')
+    elif u.is_admin and User.query.filter_by(is_admin=True, deleted=False).count() <= 1: flash('Debe quedar al menos un administrador')
+    else:  # se quita de la lista y ya no puede entrar; su nombre se conserva en el historial
+        u.deleted = True; u.active = False; u.username = f'eliminado~{u.id}'; db.session.commit(); flash(f'Usuario "{u.full_name}" eliminado')
+    return redirect(url_for('admin'))
 
 @app.route('/audit')
 @login_required

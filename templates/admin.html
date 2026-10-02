@@ -11,7 +11,7 @@
 {% for u in users %}<tr><form method=post action="{{url_for('admin_user')}}"><input type=hidden name=_t value="{{T}}"><input type=hidden name=id value="{{u.id}}">
 <td><input name=full_name value="{{u.full_name}}" required></td><td><input name=username value="{{u.username}}" required></td><td><input name=password type=password></td>
 <td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}" {{'selected' if u.region_id==r.id}}>{{r.name}}</option>{% endfor %}</select></td>
-<td><input type=checkbox name=is_admin {{'checked' if u.is_admin}}></td><td><input type=checkbox name=active {{'checked' if u.active}}></td><td><button>Guardar</button></td></form></tr>{% endfor %}
+<td><input type=checkbox name=is_admin {{'checked' if u.is_admin}}></td><td><input type=checkbox name=active {{'checked' if u.active}}></td><td style="white-space:nowrap"><button>Guardar</button> <button class=danger formaction="{{url_for('admin_user_delete')}}" onclick="return confirm('¿Eliminar a {{u.full_name}}? Ya no podrá entrar. Sus datos y el historial se conservan.')">Eliminar</button></td></form></tr>{% endfor %}
 <tr><form method=post action="{{url_for('admin_user')}}"><input type=hidden name=_t value="{{T}}"><td><input name=full_name placeholder="Nombre completo" required></td><td><input name=username placeholder=Usuario required></td>
 <td><input name=password type=password placeholder="Solo administrador"></td><td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}">{{r.name}}</option>{% endfor %}</select></td>
 <td><input type=checkbox name=is_admin></td><td></td><td><button>Crear</button></td></form></tr></table></div>
