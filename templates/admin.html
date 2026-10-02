@@ -7,12 +7,12 @@
 <td><input name=name value="{{r.name}}" required></td><td><input type=checkbox name=active {{'checked' if r.active}}></td><td><button>Guardar</button></td></form>
 <td><a href="{{url_for('region',rid=r.id)}}">Ver/editar</a></td></tr>{% endfor %}
 <tr><form method=post action="{{url_for('admin_region')}}"><input type=hidden name=_t value="{{T}}"><td><input name=name placeholder="Nueva región" required></td><td></td><td><button>Agregar</button></td></form><td></td></tr></table></div></div>
-<div class=card><h2>Usuarios</h2><p class=muted>Contraseña vacía = no cambiarla.</p><div class=sc><table><tr><th>Nombre completo</th><th>Usuario</th><th>Contraseña</th><th>Región</th><th>Admin</th><th>Activo</th><th></th></tr>
+<div class=card><h2>Usuarios</h2><p class=muted>Los usuarios normales entran solo con su nombre de usuario (sin contraseña). La contraseña es solo para administradores; vacía = no cambiarla.</p><div class=sc><table><tr><th>Nombre completo</th><th>Usuario</th><th>Contraseña (solo admin)</th><th>Región</th><th>Admin</th><th>Activo</th><th></th></tr>
 {% for u in users %}<tr><form method=post action="{{url_for('admin_user')}}"><input type=hidden name=_t value="{{T}}"><input type=hidden name=id value="{{u.id}}">
 <td><input name=full_name value="{{u.full_name}}" required></td><td><input name=username value="{{u.username}}" required></td><td><input name=password type=password></td>
 <td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}" {{'selected' if u.region_id==r.id}}>{{r.name}}</option>{% endfor %}</select></td>
 <td><input type=checkbox name=is_admin {{'checked' if u.is_admin}}></td><td><input type=checkbox name=active {{'checked' if u.active}}></td><td><button>Guardar</button></td></form></tr>{% endfor %}
 <tr><form method=post action="{{url_for('admin_user')}}"><input type=hidden name=_t value="{{T}}"><td><input name=full_name placeholder="Nombre completo" required></td><td><input name=username placeholder=Usuario required></td>
-<td><input name=password type=password placeholder=Contraseña required></td><td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}">{{r.name}}</option>{% endfor %}</select></td>
+<td><input name=password type=password placeholder="Solo administrador"></td><td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}">{{r.name}}</option>{% endfor %}</select></td>
 <td><input type=checkbox name=is_admin></td><td></td><td><button>Crear</button></td></form></tr></table></div>
 <h2>Informe</h2><form method=get action="{{url_for('export')}}">Año <input type=number name=year value="2026" style="width:80px"> <button class=b>Descargar Excel consolidado</button></form></div>{% endblock %}

@@ -1,3 +1,5 @@
-{% extends 'base.html' %}{% block c %}<div class="card lg"><h2>Iniciar sesión</h2><p class=muted>Ingresa con el usuario que te dio el administrador.</p>
-<form method=post><input type=hidden name=_t value="{{T}}"><input name=username placeholder=Usuario required autofocus>
-<input name=password type=password placeholder=Contraseña required><button class=b>Entrar</button></form></div>{% endblock %}
+{% extends 'base.html' %}{% block c %}<div class="card lg"><h2 style="font-size:24px">Bienvenida</h2>
+{% if need_pw %}<p>Hola, <b>{{need_pw}}</b>. Escriba su contraseña de administrador.</p>
+<form method=post><input type=hidden name=_t value="{{T}}"><input type=hidden name=username value="{{need_pw}}"><input name=password type=password placeholder=Contraseña required autofocus><button class=b>Entrar</button></form>
+{% else %}<p>Escriba su nombre de usuario y presione <b>Entrar</b>.</p>
+<form method=post><input type=hidden name=_t value="{{T}}"><input name=username placeholder="Su usuario" required autofocus autocapitalize=none autocomplete=username><button class=b>Entrar</button></form>{% endif %}</div>{% endblock %}

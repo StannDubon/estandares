@@ -109,10 +109,15 @@ with app.app_context(): setup()
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        u = User.query.filter_by(username=request.form['username'].strip()).first()
-        if u and u.active and check_password_hash(u.password_hash, request.form['password']):
-            login_user(u); return redirect(url_for('home'))
-        flash('Usuario o contraseña incorrectos')
+        name = request.form.get('username', '').strip().lower()
+        u = User.query.filter(db.func.lower(User.username) == name).first()
+        if not (u and u.active): flash('No encontramos ese usuario. Revise que esté bien escrito.')
+        elif not u.is_admin: login_user(u, remember=True); return redirect(url_for('home'))  # usuarios normales: solo nombre de usuario
+        else:  # el administrador sí usa contraseña
+            pw = request.form.get('password')
+            if pw is None: return render_template('login.html', need_pw=u.username)
+            if check_password_hash(u.password_hash, pw): login_user(u, remember=True); return redirect(url_for('home'))
+            flash('Contraseña incorrecta'); return render_template('login.html', need_pw=u.username)
     return render_template('login.html')
 
 @app.route('/logout', methods=['POST'])
@@ -178,7 +183,9 @@ def admin_user():
     u.active = bool(request.form.get('active')) if i else True
     u.is_admin = bool(request.form.get('is_admin'))
     if request.form.get('password'): u.password_hash = generate_password_hash(request.form['password'])
-    elif not i: flash('Falta contraseña'); return redirect(url_for('admin'))
+    elif not i:
+        if u.is_admin: flash('Un administrador necesita contraseña'); return redirect(url_for('admin'))
+        u.password_hash = generate_password_hash(secrets.token_hex(8))  # los usuarios normales no usan contraseña
     db.session.add(u)
     try: db.session.commit(); flash('Usuario guardado')
     except IntegrityError: db.session.rollback(); flash('Ese usuario ya existe')

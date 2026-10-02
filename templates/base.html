@@ -22,7 +22,7 @@ th.m{position:sticky;left:0;text-align:left;background:#f9e5ee;z-index:1;min-wid
 tr.cur td,tr.cur th.m{background:#fff6dc!important}tr.ro td{color:#6b7280}
 .bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
 .tag{background:#fff6dc;border:1px solid #ecd48a;border-radius:4px;padding:3px 10px;font-weight:600;color:#7a5b00}
-.lg{max-width:370px;margin:60px auto}.lg input{width:100%;margin-bottom:12px;padding:8px 10px}.lg button{width:100%}
+.lg{max-width:370px;margin:60px auto}.lg input{width:100%;margin-bottom:14px;padding:12px;font-size:20px}.lg p{font-size:17px}.lg button{width:100%;font-size:20px;padding:12px}
 .muted{color:#6b7280;font-size:13px}
 </style>
 <nav><b>Estándares de Enfermería</b>{% if current_user.is_authenticated %}{% if current_user.is_admin %}<a href="{{url_for('admin')}}">Administración</a><a href="{{url_for('audit')}}">Historial</a>{% endif %}
