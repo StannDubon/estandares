@@ -1,10 +1,30 @@
 <!doctype html><html lang=es><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
 <title>Estándares de Enfermería</title>
-<style>body{font:14px Arial,sans-serif;margin:0;background:#f4f6f8}main{padding:16px}nav{background:#1f4e79;color:#fff;padding:10px 16px;display:flex;gap:16px;align-items:center}
-nav a,nav button{color:#fff;background:none;border:0;cursor:pointer;font:inherit;text-decoration:underline}.sp{flex:1}
-table{border-collapse:collapse;background:#fff}th,td{border:1px solid #ccc;padding:4px;text-align:center}th{background:#dce6f1;font-size:12px}
-input[type=number]{width:62px}.sc{overflow-x:auto}.f{background:#fff3cd;padding:8px;margin-bottom:10px}.pc{background:#eef5ea}button.b{padding:6px 12px}
-form.i{display:contents}</style>
-<nav><b>Estándares de Enfermería</b>{% if current_user.is_authenticated %}{% if current_user.is_admin %}<a href="{{url_for('admin')}}">Admin</a><a href="{{url_for('audit')}}">Historial</a>{% endif %}
-<span class=sp></span>{{current_user.full_name}}<form method=post action="{{url_for('logout')}}"><input type=hidden name=_t value="{{T}}"><button>Salir</button></form>{% endif %}</nav>
+<style>
+:root{--p:#1f4e79;--p2:#2b6cb0;--bg:#f3f6fa;--bd:#d5dde8;--tx:#1f2937}
+*{box-sizing:border-box}body{font:14px/1.5 "Segoe UI",system-ui,Arial,sans-serif;color:var(--tx);background:var(--bg);margin:0}
+nav{background:var(--p);color:#fff;padding:10px 24px;display:flex;gap:18px;align-items:center;border-bottom:3px solid #4a90c9}
+nav b{font-size:16px;letter-spacing:.2px}nav a{color:#dbe9f7;text-decoration:none;padding:4px 2px;border-bottom:2px solid transparent}nav a:hover{color:#fff;border-color:#fff}
+nav .sp{flex:1}nav form{margin:0}nav button{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35);padding:4px 12px}nav button:hover{background:rgba(255,255,255,.22)}
+main{padding:22px 24px;max-width:1500px;margin:0 auto}h2{margin:0 0 12px;color:var(--p);font-size:19px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:6px;padding:16px 20px;margin-bottom:20px;box-shadow:0 1px 3px rgba(16,40,70,.07)}
+.f{background:#eaf3fb;border-left:4px solid var(--p2);padding:10px 14px;border-radius:4px;margin-bottom:14px}
+button{font:inherit;cursor:pointer;border:1px solid var(--p2);background:#fff;color:var(--p2);border-radius:5px;padding:5px 12px}button:hover{background:#eaf3fb}
+button.b{background:var(--p2);color:#fff;padding:8px 18px;font-weight:600}button.b:hover{background:var(--p)}
+input,select{font:inherit;border:1px solid #c3cfdd;border-radius:4px;padding:5px 8px;background:#fff}
+input:focus,select:focus{outline:none;border-color:var(--p2);box-shadow:0 0 0 3px rgba(43,108,176,.18)}
+input[type=number]{width:68px;text-align:center}input[type=checkbox]{width:16px;height:16px;accent-color:var(--p2)}
+table{border-collapse:collapse;background:#fff;width:100%}th,td{border:1px solid #e1e7ef;padding:6px 8px;text-align:center}
+th{background:#e8f0f8;color:#1f3a5f;font-size:12px;font-weight:600}td input[type=text],td input:not([type]),td input[type=password]{width:100%;min-width:130px}
+tbody tr:nth-child(even) td{background:#fafcfe}.sc{overflow-x:auto;border:1px solid var(--bd);border-radius:6px}.sc table{border:0}
+th.m{position:sticky;left:0;text-align:left;background:#e8f0f8;z-index:1;min-width:110px}
+.pc{background:#eef6f0!important;color:#22543d;font-weight:600}th.pc{background:#dcefe3!important}
+tr.cur td,tr.cur th.m{background:#fff6dc!important}tr.ro td{color:#6b7280}
+.bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.tag{background:#fff6dc;border:1px solid #ecd48a;border-radius:4px;padding:3px 10px;font-weight:600;color:#7a5b00}
+.lg{max-width:370px;margin:60px auto}.lg input{width:100%;margin-bottom:12px;padding:8px 10px}.lg button{width:100%}
+.muted{color:#6b7280;font-size:13px}
+</style>
+<nav><b>Estándares de Enfermería</b>{% if current_user.is_authenticated %}{% if current_user.is_admin %}<a href="{{url_for('admin')}}">Administración</a><a href="{{url_for('audit')}}">Historial</a>{% endif %}
+<span class=sp></span><span>{{current_user.full_name}}</span><form method=post action="{{url_for('logout')}}"><input type=hidden name=_t value="{{T}}"><button>Salir</button></form>{% endif %}</nav>
 <main>{% for m in get_flashed_messages() %}<div class=f>{{m}}</div>{% endfor %}{% block c %}{% endblock %}</main></html>

@@ -1,3 +1,3 @@
-{% extends 'base.html' %}{% block c %}<h2>Ingresar</h2>
-<form method=post><input type=hidden name=_t value="{{T}}"><p><input name=username placeholder=Usuario required autofocus></p>
-<p><input name=password type=password placeholder=Contraseña required></p><button class=b>Entrar</button></form>{% endblock %}
+{% extends 'base.html' %}{% block c %}<div class="card lg"><h2>Iniciar sesión</h2><p class=muted>Ingresa con el usuario que te dio el administrador.</p>
+<form method=post><input type=hidden name=_t value="{{T}}"><input name=username placeholder=Usuario required autofocus>
+<input name=password type=password placeholder=Contraseña required><button class=b>Entrar</button></form></div>{% endblock %}

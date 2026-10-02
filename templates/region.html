@@ -1,8 +1,11 @@
-{% extends 'base.html' %}{% block c %}<h2>{{r.name}} — {{year}}</h2>
-{% if current_user.is_admin %}<form method=get>Año <input type=number name=year value="{{year}}" style="width:80px"> <button>Ver</button></form>{% else %}<p class=f>Mes habilitado: <b>{{MESES[pm-1]}} {{py}}</b>. Solo puedes editar este mes.</p>{% endif %}<br>
+{% extends 'base.html' %}{% block c %}
+<div class=bar><h2 style="margin:0">{{r.name}} — {{year}}</h2>
+{% if current_user.is_admin %}<form method=get>Año <input type=number name=year value="{{year}}" style="width:80px"> <button>Ver</button></form>
+{% else %}<span class=tag>Mes habilitado: {{MESES[pm-1]}} {{py}}</span>{% endif %}</div>
 <form method=post><input type=hidden name=_t value="{{T}}"><input type=hidden name=year value="{{year}}">
-<div class=sc><table><tr><th>Mes</th>{% for k,c,l in F %}<th>{{l}}</th>{% if k in P %}<th class=pc>{{P[k][0]}}</th>{% endif %}{% endfor %}</tr>
-{% for m in range(1,13) %}<tr><th>{{MESES[m-1]}}</th>{% for k,c,l in F %}<td>{% if m in editable %}<input type=number min=0 name="{{m}}_{{k}}" value="{{vals[m][k] if vals[m][k] is not none}}">{% else %}{{vals[m][k] if vals[m][k] is not none}}{% endif %}</td>
+<div class=sc><table><tr><th class=m rowspan=2>Mes</th><th colspan=3>Atención PAE</th><th colspan=4>Toma de PAP/VPH</th><th colspan=4>Satisfacción del usuario</th><th colspan=4>Tamizaje neonatal</th><th colspan=2>Venopunción segura</th><th>Caídas</th></tr>
+<tr>{% for k,c,l in F %}<th>{{l}}</th>{% if k in P %}<th class=pc>{{P[k][0]}}</th>{% endif %}{% endfor %}</tr>
+{% for m in range(1,13) %}<tr class="{{'cur' if m==pm and year==py}} {{'ro' if m not in editable}}"><th class=m>{{MESES[m-1]}}</th>{% for k,c,l in F %}<td>{% if m in editable %}<input type=number min=0 name="{{m}}_{{k}}" value="{{vals[m][k] if vals[m][k] is not none}}">{% else %}{{vals[m][k] if vals[m][k] is not none}}{% endif %}</td>
 {% if k in P %}<td class=pc>{{pct(vals[m][P[k][1]],vals[m][P[k][2]])}}</td>{% endif %}{% endfor %}</tr>{% endfor %}</table></div>
-<p><button class=b>Guardar</button> Los datos no se pueden borrar; cada cambio queda en el historial.</p></form>
-{% if current_user.is_admin %}<a href="{{url_for('admin')}}">← Admin</a>{% endif %}{% endblock %}
+<p style="margin-top:16px"><button class=b>Guardar cambios</button> <span class=muted>&nbsp;Los datos no se pueden borrar; cada cambio queda en el historial.</span></p></form>
+{% if current_user.is_admin %}<a href="{{url_for('admin')}}">← Volver a administración</a>{% endif %}{% endblock %}

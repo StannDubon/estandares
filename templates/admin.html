@@ -1,13 +1,13 @@
 {% extends 'base.html' %}{% block c %}
-<h2>Mes habilitado para los usuarios</h2><form method=post action="{{url_for('admin_period')}}"><input type=hidden name=_t value="{{T}}">
+<div class=card><h2>Mes habilitado para los usuarios</h2><form method=post action="{{url_for('admin_period')}}"><input type=hidden name=_t value="{{T}}">
 <select name=month>{% for m in MESES %}<option value="{{loop.index}}" {{'selected' if loop.index==period[1]}}>{{m}}</option>{% endfor %}</select>
-<input type=number name=year value="{{period[0]}}" style="width:80px"> <button class=b>Guardar</button> Los usuarios solo podrán editar este mes.</form>
-<h2>Regiones</h2><table><tr><th>Nombre</th><th>Activa</th><th></th><th>Datos</th></tr>
+<input type=number name=year value="{{period[0]}}" style="width:80px"> <button class=b>Guardar</button> <span class=muted>Los usuarios solo podrán editar este mes.</span></form></div>
+<div class=card><h2>Regiones</h2><div class=sc><table><tr><th>Nombre</th><th>Activa</th><th></th><th>Datos</th></tr>
 {% for r in regions %}<tr><form method=post action="{{url_for('admin_region')}}"><input type=hidden name=_t value="{{T}}"><input type=hidden name=id value="{{r.id}}">
 <td><input name=name value="{{r.name}}" required></td><td><input type=checkbox name=active {{'checked' if r.active}}></td><td><button>Guardar</button></td></form>
 <td><a href="{{url_for('region',rid=r.id)}}">Ver/editar</a></td></tr>{% endfor %}
-<tr><form method=post action="{{url_for('admin_region')}}"><input type=hidden name=_t value="{{T}}"><td><input name=name placeholder="Nueva región" required></td><td></td><td><button>Agregar</button></td></form><td></td></tr></table>
-<h2>Usuarios</h2><p>Contraseña vacía = no cambiarla.</p><div class=sc><table><tr><th>Nombre completo</th><th>Usuario</th><th>Contraseña</th><th>Región</th><th>Admin</th><th>Activo</th><th></th></tr>
+<tr><form method=post action="{{url_for('admin_region')}}"><input type=hidden name=_t value="{{T}}"><td><input name=name placeholder="Nueva región" required></td><td></td><td><button>Agregar</button></td></form><td></td></tr></table></div></div>
+<div class=card><h2>Usuarios</h2><p class=muted>Contraseña vacía = no cambiarla.</p><div class=sc><table><tr><th>Nombre completo</th><th>Usuario</th><th>Contraseña</th><th>Región</th><th>Admin</th><th>Activo</th><th></th></tr>
 {% for u in users %}<tr><form method=post action="{{url_for('admin_user')}}"><input type=hidden name=_t value="{{T}}"><input type=hidden name=id value="{{u.id}}">
 <td><input name=full_name value="{{u.full_name}}" required></td><td><input name=username value="{{u.username}}" required></td><td><input name=password type=password></td>
 <td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}" {{'selected' if u.region_id==r.id}}>{{r.name}}</option>{% endfor %}</select></td>
@@ -15,4 +15,4 @@
 <tr><form method=post action="{{url_for('admin_user')}}"><input type=hidden name=_t value="{{T}}"><td><input name=full_name placeholder="Nombre completo" required></td><td><input name=username placeholder=Usuario required></td>
 <td><input name=password type=password placeholder=Contraseña required></td><td><select name=region_id><option value="">—</option>{% for r in regions %}<option value="{{r.id}}">{{r.name}}</option>{% endfor %}</select></td>
 <td><input type=checkbox name=is_admin></td><td></td><td><button>Crear</button></td></form></tr></table></div>
-<h2>Informe</h2><form method=get action="{{url_for('export')}}">Año <input type=number name=year value="2026" style="width:80px"> <button class=b>Descargar Excel consolidado</button></form>{% endblock %}
+<h2>Informe</h2><form method=get action="{{url_for('export')}}">Año <input type=number name=year value="2026" style="width:80px"> <button class=b>Descargar Excel consolidado</button></form></div>{% endblock %}
