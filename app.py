@@ -70,7 +70,7 @@ def period():
     y, m, t = db.session.get(Setting, 'year'), db.session.get(Setting, 'month'), dt.date.today()
     return (int(y.value) if y else t.year, int(m.value) if m else t.month)
 
-def pct(a, b): return round(a * 100 / b, 1) if a is not None and b else ''
+def pct(a, b): return f'{a * 100 / b:.0f}%' if a is not None and b else ''
 app.jinja_env.globals.update(pct=pct, F=FIELDS, P=PCT, MESES=MESES)
 
 @lm.user_loader
@@ -206,7 +206,7 @@ def fill(ws, d, year, title):
             if k in d.get(r - 8, {}): ws[f'{col}{r}'] = d[r - 8][k]
     for _, col, _ in FIELDS: ws[f'{col}21'] = f'=SUM({col}9:{col}20)'
     for r in range(9, 22):
-        for _, _, _, pc, n, dn in PCT.values(): ws[f'{pc}{r}'] = f'=IF({dn}{r}>0,ROUND({n}{r}/{dn}{r}*100,1),"")'
+        for _, _, _, pc, n, dn in PCT.values(): ws[f'{pc}{r}'] = f'=IF({dn}{r}>0,{n}{r}/{dn}{r},"")'; ws[f'{pc}{r}'].number_format = '0%'
 
 def agg(entries):
     d = {}
